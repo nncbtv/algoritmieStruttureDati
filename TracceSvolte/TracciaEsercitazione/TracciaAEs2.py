@@ -28,6 +28,21 @@ def independent(G, S):
                     return False
 
     #Punto 3
-    
-    #Rimozione nodi
-    
+    """
+    Risulta ambiguo, non posso creare una BST da un grafo non orientato, non ho informazioni per costruirlo.
+    Probabilmente il prof avrà inserito un altro dettaglio tralasciato dalla traccia e detto a voce a lezione
+    """
+    """
+    STUDIO DELLA COMPLESSITÀ ALGORITMICA
+    Fisso prima di tutto n il numero di nodi del grafo e k il numero di nodi della lista S.
+    Nel caso peggiore dato che S è un sottoinsieme dei nodi possiamo avere k<=n.
+    Riga 15: controllare una lista vuota è pari a O(1)
+    Riga 16-17: Il ciclo viene eseguito K e l'if invece deve creare ogni volta la lista di nodi del grafo quindi O(n) => O(k*n) se però nel caso peggiore k=n diventa O(n^2)
+    Riga 20: Controllo della lunghezza costa un tempo O(1) ma siccome devo creare una lista di nodi con g.nodes diventa O(1*n) => O(n)
+    Riga 24-28:
+        Il primo ciclo viene ripetuto per k volte, il secondo ciclo viene ripetuto in modo decrescente di k fino ad arrivare a 0 ((k-1)+(k-2).....+0) 
+        riconducibile al coefficinete binomiale (k(k-1))/2
+        Quindi O(k^2) in modo grossolano
+    Complessità generica: O(k*n)+O(n)+O(k^2)
+    Il caso peggiore si verifica quando k=n perché la complessità si riduce a O(n^2)
+    """

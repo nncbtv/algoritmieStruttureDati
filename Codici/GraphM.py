@@ -23,6 +23,6 @@ class Graph:
             self.matrix[i][j] = 0
     
     #Inserisco una funzione fittizia per creare un grafo non orientato con una matrice di adiacenza
-    def insertEdgeUndirected(G,x,y):
-        G.insertEdge(x,y)
-        G.insertEdge(y,x)
+    def insertEdgeUndirected(self,x,y):
+        self.insertEdge(x,y)
+        self.insertEdge(y,x)

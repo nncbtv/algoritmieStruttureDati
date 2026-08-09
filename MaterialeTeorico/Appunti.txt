@@ -1,0 +1,9 @@
+APPUNTI GRAFI
+Grado di entrata = numero di archi entranti in un nodo
+Grado di uscita = numero di archi uscenti in un nodo
+In un grafo non orientato si parla solo di grado del nodo senza specificare entrata o uscita poiché non c'è differenza, quindi è il numero di archi incidenti su di esso.
+RAPPRESENTAZIONE MATRICE
+La rappresentazione con matrice letteralmente è una matrice di tutti 0 ed indichiamo i nodi del grafo con l'indice di riga e colonna, se l'indice di riga e colonna contiene 1 vuol dire che esiste un arco verso quei due indici.
+Per un grafo pesato mettiamo anziché 0 edd 1 il peso dell'arco e un valore speciale, come ad esempio infinito se l'arco tra i due nodi non esiste. Sulla diagonale però avremo zero poiché restare su noi stessi non ha peso.
+RAPPRESENTAZIONE LISTA
+La rappresentazione con lista di adiacenza nient'altro è che un array di linkedlist in cui per ogni indice che identifica un nodo abbiamo la lista dei suoi vicini, se il grafo è pesato memorizziamo coppie, (vicino, peso).

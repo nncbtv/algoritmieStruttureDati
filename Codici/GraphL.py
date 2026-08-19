@@ -60,3 +60,8 @@ class Graph:
         new_g = Graph(len(self.adj))
         new_g.adj = [row[:] for row in self.adj]
         return new_g
+    
+    def getWeight(self, x, y): #Mi mancava la primitiva per il peso
+        for nodo, peso in self.adj[x]: #Entro nella lista di adiacenza del nodo x e controllo se c'è y come vicino
+            if ( nodo == y ):
+                return peso

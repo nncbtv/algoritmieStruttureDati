@@ -390,3 +390,53 @@ STUDIO COMPLESSITÀ SPAZIALE
 Nel peggiore dei casi l'heap viene riempito per O(m) elementi mentre tutti gli altri costano O(n).
 Qui la complessità sarà quindi O(m+n)
 '''
+def fordFulkersonSemplice(G, S, T): #Ford Fulkerson mi trova il massimo flusso inviabile sul nostro grafo consumando la capacità degli archi di tutti i possibili cammini
+    #Inizialmente dobbiamo costruire un grafo copia che utilizzeremo come resiuduo, aggiorniamo qui le capacità
+    residuo = Graph(G) #Supponiamo che in questo modo creo una copia che modificandola non alteri il grafo originale
+    flussoMassimo = 0 #Flusso aumentato con ford fulkerson
+    #Cominciamo dopodiché a trovare un primo cammino
+    nodiCammino, flussoCammino = trovaCamminoBFS(residuo, S, T) #Mi trovo il primo cammino
+    while flussoCammino > 0: #Sostanzialemnte continuo ad iterare finchè trovo cammini nel grafo
+        #Ora devo aggiornare le capacità degli archi scelti nel nostro cammino tramite il vettore dei nodi passato dalla funzione
+        nodo = T #Comincio andando da T all'indietro
+        while nodo != S: #finché non arrivo alla sorgente continuo ad aggiornare gli archi
+            nodoPrecedente = nodiCammino[nodo] #Prendo il precedente del nodo su cui mi trovo, alla prima iterazione il nodo precedente di T
+            #Devo modificare ora gli archi sul grafo
+            flussoArco = residuo.getWeight(nodoPrecedente, nodo) #Prendo il flusso non aggiornato dell'arco
+            nuovoFlusso = flussoArco - flussoCammino #Calcolo il nuovo flusso aumentato
+            residuo.insertEdge(nodoPrecedente, nodo, nuovoFlusso) #Modifico il flusso rimanente su quell'arco
+            nodo = nodoPrecedente #Mi sposto sul nodo precedente e cerco poi il suo precedente 
+        #Finito l'aggioranmento del grafo cerco un altro cammino aggiornando il flusso massimo
+        flussoMassimo += flussoCammino #Aggiungo il flusso inviato in questo cammino prima di cercarne altri
+        nodiCammino, flussoCammino = trovaCamminoBFS(residuo, S, T) #Mi trovo un altro cammino aumentate
+    return flussoMassimo #ritorno di quanto ho aumentato il flusso
+
+def trovaCamminoBFS(grafoResiduo, S, T): #Visita BFS che mi restituisce il cammino da S a T con il flusso massimo
+    nodiVisitati = [False]*grafoResiduo.size() #Vettore dei nodi visitati per non visitarli nuovamente
+    nodiVisitati[S] = True #Il nodo di partenza è già visitato
+    nodiCammino = [None]*grafoResiduo.size() #Segno da quale nodo arrivo per ogni nodo del grafo
+    flussoCammino = 0 #Restitutisco 0 se non trovo un cammino sul grafo
+    coda = [(S, math.inf())] #Coda in cui tengo i nodi da visitare e il flusso massimo del cammino
+    while len(coda) > 0: #Continuo l'estrazione dalla coda
+        nodoAttule, flussoAttuale = coda.pop(0) #Ordine FIFO per gestire la visita in ampiezza
+        if nodoAttule == T: #Controllo se sono arrivato alla fine
+            flussoCammino = flussoAttuale #Salvo il flusso per stamparlo alla fine
+            break #Ho trovato il nodo che cercavo quindi termino
+        for nodoVicino in neighbors(grafoResiduo, nodoAttule): #Scorro la lista dei vicini al nodo attuale
+            if not nodiVisitati[nodoVicino]: #Se non ho visitato il nodo vicino significa che posso spostarmi su di esso
+                pesoArco = grafoResiduo.getWeight(nodoAttule, nodoVicino) #Prendo il flusso trasferibile su quell'arco
+                if pesoArco < flussoAttuale: #Aggiorno il flusso trasportabile su quel cammino fino a questo momento
+                    flussovicino = min(flussoAttuale, pesoArco) #Devo salvare fino al vicino il flusso massimo che posso inviare, cioè l'arco con capienza più piccola
+                nodiVisitati[nodoVicino] = True #Segno il nodo come visitato
+                nodiCammino[nodoVicino] = nodoAttule #Aggancio il nodo da cui sono venuto
+                coda.append([nodoVicino, flussovicino]) #Aggiungo il nodo alla coda per poi scorrere i suoi vicini cosi via fino al nodo T
+    return nodiCammino, flussoCammino #Ritorno i nodi del cammino e il flusso massimo dello stesso
+'''
+STUDIO COMPLESSITÀ TEMPORALE
+Supponiamo che per creare una copia del grafo impieghiamo al più O(n+m).
+La nostra funzione trovaCamminoBFS impiega un tempo pari a O(n^2) poiché scorre gli n nodi e chiama n volte la funzione neighbors con costo al più O(n).
+La complessità generale è O(m*n^2) poiché chiamiamo la funzione trovaCammino m volte, m nel peggiore dei casi può essere n^2 portando tutto a O(n^4)
+STUDIO COMPLESSITÀ SPAZIALE
+Sostanzialmente tutti i vettori usati possono essere al più O(n) mentre la creazione del residuo O(m+n) che domina asintoticamente.
+Portando la complessità generale a O(m+n)
+'''

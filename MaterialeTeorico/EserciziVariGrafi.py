@@ -28,7 +28,7 @@ adiacenza potremmo restituire direttamente la lista dei vicini del nodo per come
 '''
 def raggiungibileBFS(G, s, t): #Devo trovare un percorso da S a T in un grafo non orientato e non pesato, True se esiste e False altrimenti
     #Ho implementato la visita BFS per risolvere, usa una coda FIFO per visitare il grafo in ampiezza
-    if ( s == t ): return True
+    if ( s == t ): return True #Caso migliore
     nodiVisitati = [False] * G.size() #Siccome potrei entrare in un ciclo non visito lo stesso nodo due volte
     nodiVisitati[s] = True #Per non tornare su me stesso
     codaVicini = [s] #Metto in coda i nodi per visitare i loro vicini in ordine FIFO
@@ -36,7 +36,7 @@ def raggiungibileBFS(G, s, t): #Devo trovare un percorso da S a T in un grafo no
         nodoCorrente = codaVicini.pop(0) #Prendo un nodo dalla coda, mettendo l'indice garantisco FIFO e mi muovo in ampiezza
         for nodoVicino in neighbors(G, nodoCorrente): #Scorro la lista dei nodi vicini, alla prima iterazione quelli vicini ad s
             if not nodiVisitati[nodoVicino]: #Se non l'ho visitato lo visito e controllo
-                nodiVisitati[nodoVicino] = True
+                nodiVisitati[nodoVicino] = True #Segno il nodo come visitato per non tornarci se lo trovo come un altro vicino di un altro nodo
                 if nodoVicino == t: 
                     return True #Ho trovato il nodo
                 codaVicini.append(nodoVicino) #Inserisco il nodo per poi elaborare i suoi di vicini
@@ -109,7 +109,7 @@ Nel peggiore dei casi scorriamo con la visita DFS tutti i possibili cammini senz
 neighbors che abbiamo discusso in precedenza avendo complessità O(n) che porta tutto a O(n*n!) nel peggiore dei casi.
 Ovviamente se miglioriamo la funzione neighbors con un implementazione a liste discussa precedentemente togliamo complessità.
 COMPLESSITÀ SPAZIALE
-Lo stack si riempie di tutte le chiamate ricorsive attive che possono essere un massimo di O(n) oltre al vettore ausiliario stanziato per i visitati O(n)x\x
+Lo stack si riempie di tutte le chiamate ricorsive attive che possono essere un massimo di O(n) oltre al vettore ausiliario stanziato per i visitati O(n)
 '''
 def esisteCamminoCostoBFS( G, S, T, costoLimite ): #Stessa funzione precedente implementata con visita BFS
     if ( S == T ): #Caso migliore
@@ -124,10 +124,10 @@ def esisteCamminoCostoBFS( G, S, T, costoLimite ): #Stessa funzione precedente i
             if nodoVicino not in percorsoAttuale: #Se il nodo è presente nel percorso non lo prendo
                 nuovoCosto = costoAttuale + pesoVicino
                 if nuovoCosto <= costoLimite: #Controllo quanto mi costa spostarmi sul vicino e se posso farlo senza eccedere il limite
-                    if nodoVicino == T:
-                        return True #Sono arrivato a destinazione
                     #Devo aggiungere il nodo al percorso
                     nuovoPercorso = percorsoAttuale + [nodoVicino]
+                    if nodoVicino == T:
+                        return True #Sono arrivato a destinazione
                     #Aggiorno il cammino mettendolo in coda
                     coda.append([ nodoVicino, nuovoCosto, nuovoPercorso ]) #Questo è il nuovo percorso fino al nodo vicino
     return False #Non esiste il cammino cercato

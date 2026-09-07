@@ -253,7 +253,7 @@ def union(padre, nodo1, nodo2): #Unisco i nodi in un solo insieme
     return padre #Ritorno il vettore aggiornato
 
 def kruskalStandard(G): #Implementazione con la union-find, kruskal in modo strandard
-    #Kruskal mi costruire il minimo albero ricoprente del grafo, sostanzialemente collego tutti i nodi con archi di costo minimo
+    #Kruskal mi costruisce il minimo albero ricoprente del grafo, sostanzialemente collego tutti i nodi con archi di costo minimo
     #Comincio a prendere tutti gli archi del nostro grafo
     archi = [] #lista di tutti gli archi del grafo
     nodiVisitati = [False]*G.size() #Mi serve per non duplicare gli archi del grafo dato che non è orientato
@@ -264,16 +264,16 @@ def kruskalStandard(G): #Implementazione con la union-find, kruskal in modo stra
                 pesoArco = G.getWeight(nodo, nodoVicino) #Mi faccio restituire il peso
                 archi.append([nodo, nodoVicino, pesoArco]) #Inserisco l'arco con il peso nella lista
         nodiVisitati[nodo] = True #Quindi il nodo attuale non verra preso in considerazione una volta che mi sposto sui prossimi nodi
-    archi.sort(key= lambda arco:arco[2]) #Ordino la lista per il campo pesoArco in modo crescente
+    archi.sort(key= lambda arco:arco[2]) #Ordino la lista per il campo pesoArco in modo crescente, possibile farlo anche con heapsort, più efficiente
     #Da questo punto in poi cambia, introduco il vettore dei padri
     padre = list(range(G.size())) #Vettore con inizialmente i padri dei nodi impostati su loro stessi
     mst = Graph(G.size()) #Creo un grafo per poi usarlo come MST
-    for arco in archi: #Comincio a scorrere gli archi
+    for arco in archi: #Comincio a scorrere gli archi ordinati in precedenza, in modo crescente
         nodo1, nodo2, peso = arco #Prendo i valori di ogni arco
         #controllo con la find se appartengono ad insiemi diversi
-        if find(padre, nodo1) != find(padre, nodo2): #Non hanno lo stesso padre => non sto creando ciclo
+        if find(padre, nodo1) != find(padre, nodo2): #Non hanno lo stesso padre => non sto creando ciclo e posso aggiungerli al mst
             mst.insertEdge(nodo1, nodo2, peso) #Aggiungo l'arco al MST
-            union(padre, nodo1, nodo2) #Unisco il nodo 2 all'insieme del nodo 1
+            union(padre, nodo1, nodo2) #Unisco il nodo 2 all'insieme del nodo 1, unione dei cluster
     return mst #Ritorno il minimo albero ricoprente
 '''
 STUDIO COMPLESSITÀ TEMPORALE

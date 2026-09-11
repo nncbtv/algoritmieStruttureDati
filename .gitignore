@@ -1,2 +1,4 @@
 ~$*.docx
 *.tmp
+__pycache__/
+*.py[cod]
